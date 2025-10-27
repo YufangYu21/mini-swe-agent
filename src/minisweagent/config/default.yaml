@@ -155,3 +155,5 @@ model:
   model_kwargs:
     temperature: 0.0
     drop_params: true
+    custom_llm_provider: "aizex"
+    api_base: "https://aizex.top/v1/chat/completions"

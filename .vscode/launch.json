@@ -1,0 +1,29 @@
+{
+    // 使用 IntelliSense 了解相关属性。
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+    //mini-extra = "your_package_name.cli:main"
+    //mini-extra = "minisweagent.run.mini_extra:main"
+        {
+            "name": "Debug mini-extra command (Module)",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "minisweagent.run.mini_extra", // 替换成你的实际模块名 (例如: myproject.cli)
+            "args": [
+                "swebench-single",
+                "--subset",
+                "verified",
+                "--split",
+                "test",
+                "--model",
+                "claude-sonnet-4-20250514",
+                "-i",
+                "sympy__sympy-15599"
+            ],
+            "python": "/home/moss/miniconda3/envs/mini-swe-agent/bin/python",
+            "justMyCode": true
+        }
+    ]
+}

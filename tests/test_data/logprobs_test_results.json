@@ -1,0 +1,333 @@
+{
+  "with_logprobs": {
+    "content": "test",
+    "extra": {
+      "response": {
+        "id": "chatcmpl-CVDyDnTHbGMTn6wryjqemU0J71mtO",
+        "created": 1761557905,
+        "model": "gpt-4o-mini-2024-07-18",
+        "object": "chat.completion",
+        "system_fingerprint": "fp_efad92c60b",
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "test",
+              "role": "assistant",
+              "tool_calls": null,
+              "function_call": null,
+              "annotations": []
+            },
+            "logprobs": {
+              "content": [
+                {
+                  "token": "test",
+                  "bytes": [
+                    116,
+                    101,
+                    115,
+                    116
+                  ],
+                  "logprob": -0.029752223,
+                  "top_logprobs": [
+                    {
+                      "token": "test",
+                      "bytes": [
+                        116,
+                        101,
+                        115,
+                        116
+                      ],
+                      "logprob": -0.029752223
+                    },
+                    {
+                      "token": "Test",
+                      "bytes": [
+                        84,
+                        101,
+                        115,
+                        116
+                      ],
+                      "logprob": -3.5297523
+                    },
+                    {
+                      "token": " test",
+                      "bytes": [
+                        32,
+                        116,
+                        101,
+                        115,
+                        116
+                      ],
+                      "logprob": -13.279752
+                    },
+                    {
+                      "token": "-test",
+                      "bytes": [
+                        45,
+                        116,
+                        101,
+                        115,
+                        116
+                      ],
+                      "logprob": -17.029753
+                    },
+                    {
+                      "token": "_test",
+                      "bytes": [
+                        95,
+                        116,
+                        101,
+                        115,
+                        116
+                      ],
+                      "logprob": -17.154753
+                    },
+                    {
+                      "token": ".test",
+                      "bytes": [
+                        46,
+                        116,
+                        101,
+                        115,
+                        116
+                      ],
+                      "logprob": -17.779753
+                    },
+                    {
+                      "token": "TEST",
+                      "bytes": [
+                        84,
+                        69,
+                        83,
+                        84
+                      ],
+                      "logprob": -18.029753
+                    },
+                    {
+                      "token": " Test",
+                      "bytes": [
+                        32,
+                        84,
+                        101,
+                        115,
+                        116
+                      ],
+                      "logprob": -19.029753
+                    },
+                    {
+                      "token": " тест",
+                      "bytes": [
+                        32,
+                        209,
+                        130,
+                        208,
+                        181,
+                        209,
+                        129,
+                        209,
+                        130
+                      ],
+                      "logprob": -21.279753
+                    },
+                    {
+                      "token": "/test",
+                      "bytes": [
+                        47,
+                        116,
+                        101,
+                        115,
+                        116
+                      ],
+                      "logprob": -21.404753
+                    },
+                    {
+                      "token": "teste",
+                      "bytes": [
+                        116,
+                        101,
+                        115,
+                        116,
+                        101
+                      ],
+                      "logprob": -21.404753
+                    },
+                    {
+                      "token": "(test",
+                      "bytes": [
+                        40,
+                        116,
+                        101,
+                        115,
+                        116
+                      ],
+                      "logprob": -21.779753
+                    },
+                    {
+                      "token": "Hello",
+                      "bytes": [
+                        72,
+                        101,
+                        108,
+                        108,
+                        111
+                      ],
+                      "logprob": -22.029753
+                    },
+                    {
+                      "token": "测试",
+                      "bytes": [
+                        230,
+                        181,
+                        139,
+                        232,
+                        175,
+                        149
+                      ],
+                      "logprob": -22.404753
+                    },
+                    {
+                      "token": "\ttest",
+                      "bytes": [
+                        9,
+                        116,
+                        101,
+                        115,
+                        116
+                      ],
+                      "logprob": -22.654753
+                    },
+                    {
+                      "token": "Testing",
+                      "bytes": [
+                        84,
+                        101,
+                        115,
+                        116,
+                        105,
+                        110,
+                        103
+                      ],
+                      "logprob": -23.029753
+                    },
+                    {
+                      "token": "stest",
+                      "bytes": [
+                        115,
+                        116,
+                        101,
+                        115,
+                        116
+                      ],
+                      "logprob": -23.279753
+                    },
+                    {
+                      "token": "tests",
+                      "bytes": [
+                        116,
+                        101,
+                        115,
+                        116,
+                        115
+                      ],
+                      "logprob": -23.654753
+                    },
+                    {
+                      "token": "Teste",
+                      "bytes": [
+                        84,
+                        101,
+                        115,
+                        116,
+                        101
+                      ],
+                      "logprob": -24.154753
+                    },
+                    {
+                      "token": ")test",
+                      "bytes": [
+                        41,
+                        116,
+                        101,
+                        115,
+                        116
+                      ],
+                      "logprob": -24.279753
+                    }
+                  ]
+                }
+              ],
+              "refusal": null
+            },
+            "provider_specific_fields": {}
+          }
+        ],
+        "usage": {
+          "completion_tokens": 2,
+          "prompt_tokens": 18,
+          "total_tokens": 20,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 0,
+            "audio_tokens": 0,
+            "reasoning_tokens": 0,
+            "rejected_prediction_tokens": 0,
+            "text_tokens": null
+          },
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cached_tokens": 0,
+            "text_tokens": null,
+            "image_tokens": null
+          }
+        },
+        "service_tier": null
+      }
+    }
+  },
+  "without_logprobs": {
+    "content": "test",
+    "extra": {
+      "response": {
+        "id": "chatcmpl-CVDyEASNsFxY5Lvcua9azw4HCrxst",
+        "created": 1761557906,
+        "model": "gpt-4o-mini-2024-07-18",
+        "object": "chat.completion",
+        "system_fingerprint": "fp_efad92c60b",
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "test",
+              "role": "assistant",
+              "tool_calls": null,
+              "function_call": null,
+              "annotations": []
+            },
+            "provider_specific_fields": {}
+          }
+        ],
+        "usage": {
+          "completion_tokens": 2,
+          "prompt_tokens": 18,
+          "total_tokens": 20,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 0,
+            "audio_tokens": 0,
+            "reasoning_tokens": 0,
+            "rejected_prediction_tokens": 0,
+            "text_tokens": null
+          },
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cached_tokens": 0,
+            "text_tokens": null,
+            "image_tokens": null
+          }
+        },
+        "service_tier": null
+      }
+    }
+  }
+}

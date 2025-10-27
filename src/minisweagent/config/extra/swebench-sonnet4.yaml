@@ -224,12 +224,10 @@ environment:
   environment_class: docker
 
 model:
-  model_name: "gpt-4o-mini"
+  model_name: "claude-sonnet-4-20250514"
   litellm_model_registry: "/home/moss/mini-swe-agent/custom_model_registry.json"
   model_kwargs:
     temperature: 0.0
     drop_params: true
     custom_llm_provider: "openai"
     api_base: "https://aizex.top/v1"
-    logprobs: true
-    top_logprobs: 20

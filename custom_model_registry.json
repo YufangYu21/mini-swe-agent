@@ -1,0 +1,9 @@
+{
+  "claude-sonnet-4-20250514": {
+    "max_tokens": 200000,
+    "input_cost_per_token": 0.000006,
+    "output_cost_per_token": 0.000030,
+    "litellm_provider": "openai",
+    "mode": "chat"
+  }
+}
