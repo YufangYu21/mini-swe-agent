@@ -1,3 +1,4 @@
+import copy
 import dataclasses
 import json
 from collections.abc import Callable
@@ -32,6 +33,16 @@ def _extract_logprobs_from_messages(messages: list[dict]) -> list[dict]:
                     logprobs_data.append({"message_index": i, "logprobs": choice["logprobs"]})
 
     return logprobs_data
+
+
+def _remove_logprobs_from_messages(messages: list[dict]) -> None:
+    """Remove logprobs from messages in-place to reduce disk usage."""
+    for message in messages:
+        if message.get("role") == "assistant" and "extra" in message:
+            extra = message["extra"]
+            if "response" in extra and "choices" in extra["response"]:
+                for choice in extra["response"]["choices"]:
+                    choice.pop("logprobs", None)
 
 
 def save_traj(
@@ -73,10 +84,16 @@ def save_traj(
         "messages": [],
         "trajectory_format": "mini-swe-agent-1",
     } | kwargs
+    # Extract logprobs data before removing it (if save_logprobs is enabled)
+    logprobs_data = None
+    if save_logprobs and agent is not None:
+        logprobs_data = _extract_logprobs_from_messages(agent.messages)
+
     if agent is not None:
         data["info"]["model_stats"]["instance_cost"] = agent.model.cost
         data["info"]["model_stats"]["api_calls"] = agent.model.n_calls
-        data["messages"] = agent.messages
+        # Create a deep copy to avoid modifying agent.messages
+        data["messages"] = copy.deepcopy(agent.messages)
         data["info"]["config"] = {
             "agent": _asdict(agent.config),
             "model": _asdict(agent.model.config),
@@ -85,6 +102,8 @@ def save_traj(
             "model_type": _get_class_name_with_module(agent.model),
             "environment_type": _get_class_name_with_module(agent.env),
         }
+        # Remove logprobs from the copy to reduce disk usage
+        _remove_logprobs_from_messages(data["messages"])
     if extra_info:
         data["info"].update(extra_info)
 
@@ -94,20 +113,18 @@ def save_traj(
         print_fct(f"Saved trajectory to '{path}'")
 
     # Save logprobs data to a separate file if requested and available
-    if save_logprobs and agent is not None:
-        logprobs_data = _extract_logprobs_from_messages(agent.messages)
-        if len(logprobs_data) > 0:
-            logprobs_path = path.with_suffix(".logprobs.json")
-            logprobs_file_data = {
-                "info": {
-                    "traj_file": str(path),
-                    "mini_version": __version__,
-                    "logprobs_count": len(logprobs_data),
-                },
-                "logprobs": logprobs_data,
-            }
-            logprobs_path.write_text(json.dumps(logprobs_file_data, indent=2))
-            if print_path:
-                print_fct(f"Saved logprobs data to '{logprobs_path}'")
-        elif print_path:
-            print_fct("No logprobs data found in agent messages")
+    if logprobs_data is not None and len(logprobs_data) > 0:
+        logprobs_path = path.with_suffix(".logprobs.json")
+        logprobs_file_data = {
+            "info": {
+                "traj_file": str(path),
+                "mini_version": __version__,
+                "logprobs_count": len(logprobs_data),
+            },
+            "logprobs": logprobs_data,
+        }
+        logprobs_path.write_text(json.dumps(logprobs_file_data, indent=2))
+        if print_path:
+            print_fct(f"Saved logprobs data to '{logprobs_path}'")
+    elif logprobs_data is not None and print_path:
+        print_fct("No logprobs data found in agent messages")
