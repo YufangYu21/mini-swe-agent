@@ -1,5 +1,6 @@
-mini-extra swebench-single \
-    --subset verified \
+mini-extra swebench \
+    --model gpt-4o-mini \
+    --subset lite \
     --split test \
-    --model  gpt-4o-mini\
-    -i sympy__sympy-15599
+    --workers 2 \
+    --slice 0:250

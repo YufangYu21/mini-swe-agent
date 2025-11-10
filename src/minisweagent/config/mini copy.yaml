@@ -153,13 +153,10 @@ environment:
     PIP_PROGRESS_BAR: 'off'
     TQDM_DISABLE: '1'
 model:
-  model_name: "gemini-2.5-pro"
+  model_name: "claude-sonnet-4-20250514"
   litellm_model_registry: "/home/moss/mini-swe-agent/custom_model_registry.json"
   model_kwargs:
     temperature: 0.0
     drop_params: true
     custom_llm_provider: "openai"
     api_base: "https://aizex.top/v1"
-    logprobs: true
-    response_logprobs: true
-    top_logprobs: 20
