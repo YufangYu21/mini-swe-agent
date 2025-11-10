@@ -31,6 +31,10 @@ class DockerEnvironmentConfig:
     """Max duration to keep container running. Uses the same format as the sleep command."""
     pull_timeout: int = 600
     """Timeout in seconds for pulling images."""
+    local_registry: str | None = os.getenv("MSWEA_LOCAL_REGISTRY", "localhost:5000")
+    """Local Docker registry to try first when pulling images. If None, skip local registry."""
+    prefer_local_registry: bool = True
+    """Whether to prefer local registry over Docker Hub. If True, tries local registry first."""
 
 
 class DockerEnvironment:
@@ -46,8 +50,57 @@ class DockerEnvironment:
     def get_template_vars(self) -> dict[str, Any]:
         return asdict(self.config)
 
+    def _pull_image(self, image_name: str) -> bool:
+        """Try to pull an image. Returns True if successful."""
+        try:
+            cmd = [self.config.executable, "pull", image_name]
+            self.logger.debug(f"Pulling image: {shlex.join(cmd)}")
+            result = subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                timeout=self.config.pull_timeout,
+                check=True,
+            )
+            self.logger.info(f"Successfully pulled image: {image_name}")
+            return True
+        except subprocess.CalledProcessError as e:
+            self.logger.debug(f"Failed to pull image {image_name}: {e.stderr}")
+            return False
+        except subprocess.TimeoutExpired:
+            self.logger.debug(f"Timeout while pulling image {image_name}")
+            return False
+
+    def _get_local_registry_image(self, image_name: str) -> str:
+        """Convert image name to local registry format."""
+        if self.config.local_registry:
+            # Remove docker.io prefix if present
+            if image_name.startswith("docker.io/"):
+                image_name = image_name[len("docker.io/"):]
+            return f"{self.config.local_registry}/{image_name}"
+        return image_name
+
     def _start_container(self):
         """Start the Docker container and return the container ID."""
+        image_to_use = self.config.image
+        
+        # Try to pull from local registry first if enabled
+        if self.config.prefer_local_registry and self.config.local_registry:
+            local_image = self._get_local_registry_image(self.config.image)
+            self.logger.info(f"Attempting to pull from local registry: {local_image}")
+            if self._pull_image(local_image):
+                image_to_use = local_image
+                self.logger.info(f"Using image from local registry: {image_to_use}")
+            else:
+                self.logger.info(f"Image not found in local registry, falling back to: {self.config.image}")
+                # Try to pull from original source
+                if not self._pull_image(self.config.image):
+                    self.logger.warning(f"Failed to pull image {self.config.image}, docker run will attempt to pull it")
+        else:
+            # Try to pull from original source
+            if not self._pull_image(self.config.image):
+                self.logger.warning(f"Failed to pull image {self.config.image}, docker run will attempt to pull it")
+        
         container_name = f"minisweagent-{uuid.uuid4().hex[:8]}"
         cmd = [
             self.config.executable,
@@ -58,7 +111,7 @@ class DockerEnvironment:
             "-w",
             self.config.cwd,
             *self.config.run_args,
-            self.config.image,
+            image_to_use,
             "sleep",
             self.config.container_timeout,
         ]
@@ -67,7 +120,7 @@ class DockerEnvironment:
             cmd,
             capture_output=True,
             text=True,
-            timeout=self.config.pull_timeout,  # docker pull might take a while
+            timeout=self.config.pull_timeout,  # docker run might also pull
             check=True,
         )
         self.logger.info(f"Started container {container_name} with ID {result.stdout.strip()}")
