@@ -51,6 +51,10 @@ full = [
     "swe-rex>=1.4.0",
 ]
 
+swebench = [
+    "datasets",
+]
+
 dev = [
     "datasets",
     "pytest",

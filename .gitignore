@@ -4,8 +4,10 @@ preds.json
 *.traj.json
 .env
 traj.json
-
+.cursor/
+.vscode/
 traj/
+results/
 
 # Created by https://www.toptal.com/developers/gitignore/api/python
 # Edit at https://www.toptal.com/developers/gitignore?templates=python
